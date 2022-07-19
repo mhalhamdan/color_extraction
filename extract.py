@@ -95,11 +95,10 @@ class ColorExtractor(object):
 
     def preprocess_image(self, image: Image.Image):
 
-        if type(image) != Image.Image:
-            try:
-                image = Image.open(image)
-            except:
-                return Exception("ERROR: not openable image")
+        try:
+            image = Image.open(image)
+        except:
+            return Exception("ERROR: not openable image")
 
         max_side = max(image.width, image.height)
 
