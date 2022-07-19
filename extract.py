@@ -96,7 +96,7 @@ class ColorExtractor(object):
     def preprocess_image(self, image: Image.Image):
 
         try:
-            image = Image.open(image)
+            new_image = Image.open(image)
         except:
             return Exception("ERROR: not openable image")
 
