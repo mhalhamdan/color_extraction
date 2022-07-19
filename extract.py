@@ -10,10 +10,11 @@ import time
 
 class ColorExtractor(object):
 
-    def __init__(self, COLOR_LIMIT=10, DIST_THRESHOLD=50, SIZE_LIMIT = 500):
+    def __init__(self, COLOR_LIMIT=10, DIST_THRESHOLD=50, SIZE_LIMIT = 1000, CLUSTER_LIMIT=9):
         self.COLOR_LIMIT = COLOR_LIMIT # Max number of colors to display
         self.DIST_THRESHOLD = DIST_THRESHOLD
         self.SIZE_LIMIT = SIZE_LIMIT
+        self.CLUSTER_LIMIT = CLUSTER_LIMIT
 
     def get_pixel_freq(self, image: Image.Image) -> Counter:
         return Counter(image.getdata())
@@ -24,21 +25,21 @@ class ColorExtractor(object):
     def get_dominant_colors_clustering(self, color_data: np.ndarray, model='kmeans'):
          # Mini-k means recommended for faster processing
         if model == "DBSCAN":
-            model = DBSCAN(eps=0.30, min_samples=5)
+            model = DBSCAN(eps=0.30, min_samples=self.CLUSTER_LIMIT)
             yhat = model.fit_predict(color_data)
 
         elif model == "BIRCH":
-            model = Birch(threshold=0.01, n_clusters=5)
+            model = Birch(threshold=0.01, n_clusters=self.CLUSTER_LIMIT)
             model.fit(color_data)
             yhat = model.predict(color_data)
 
         elif model == "gaussian":
-            model = GaussianMixture(n_components=5)
+            model = GaussianMixture(n_components=self.CLUSTER_LIMIT)
             model.fit(color_data)
             yhat = model.predict(color_data)
 
         elif model == "kmeans":
-            model = MiniBatchKMeans(n_clusters=5)
+            model = MiniBatchKMeans(n_clusters=self.CLUSTER_LIMIT)
             model.fit(color_data)
             yhat = model.predict(color_data)
 
