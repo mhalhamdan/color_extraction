@@ -100,11 +100,11 @@ class ColorExtractor(object):
         except:
             return Exception("ERROR: not openable image")
 
-        max_side = max(image.width, image.height)
+        max_side = max(new_image.width, new_image.height)
 
         if max_side > self.SIZE_LIMIT:
             scale_factor = max_side / self.SIZE_LIMIT
-            new_image = image.transform((int(image.width / scale_factor), int(image.height // scale_factor)), Image.EXTENT, data =[0, 0,  image.width , image.height])
+            new_image = new_image.transform((int(new_image.width / scale_factor), int(new_image.height // scale_factor)), Image.EXTENT, data =[0, 0,  new_image.width , new_image.height])
         
         # new_image.show()
         return new_image
