@@ -5,6 +5,7 @@ from sklearn.cluster import DBSCAN, Birch, MiniBatchKMeans
 from sklearn.mixture import GaussianMixture
 
 import numpy as np
+import io
 
 import time
 
@@ -94,6 +95,12 @@ class ColorExtractor(object):
         return tuple(int(hex[i:i+2], 16) for i in (0, 2, 4))
 
     def preprocess_image(self, image: Image.Image):
+
+        if type(image) == io.BufferedRandom:
+            buf = io.BytesIO()
+            image.write(buf)
+            buf.seek(0)
+            image = buf
 
         try:
             new_image = Image.open(image)
